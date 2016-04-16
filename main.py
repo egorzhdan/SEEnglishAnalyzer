@@ -2,7 +2,8 @@ import data
 import html_builder
 
 
-count = 200
+print("Enter count of answers to include in the result:", end=" ", flush=True)
+count = int(input())
 
 data.load_answers()
 data.load_users()

@@ -1,5 +1,4 @@
 import stack_exchange
-import data
 
 
 class HtmlPage(object):
@@ -23,7 +22,8 @@ class HtmlPage(object):
         author = item.get_owner()
         self.string += '<div class="panel panel-default">' + \
                        '<div class="panel-heading">Author:&nbsp; <a href="http://english.stackexchange.com/users/' + \
-                       author.identifier + '"><b>' + author.display_name + '</b></a><br>Score:&nbsp; ' + str(item.score) + \
+                       author.identifier + '"><b>' + author.display_name + '</b> (' + str(author.class2_count) + \
+                       ' silver badges) </a><br>Score:&nbsp; ' + str(item.score) + \
                        '</div>' + \
                        '<div class="panel-body">' + item.body + \
                        '</div></div>'
@@ -39,8 +39,14 @@ def run(count):
     html = HtmlPage()
     answers = stack_exchange.Post.get_all()
     html.start()
-    for i in range(count):
-        html.add_row(answers[i])
+    i = 0
+    for answer in answers:
+        if answer.get_owner().class2_count >= 2:
+            html.add_row(answer)
+
+        i += 1
+        if i >= count:
+            break
     html.finish()
     print("done.")
-    html.save(data.path + "result.html")
+    html.save("result.html")
