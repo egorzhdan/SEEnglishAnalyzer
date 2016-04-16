@@ -4,12 +4,16 @@ import data
 class Post(object):
     def __init__(self, node):
         self.identifier = node.get("Id")
-        self.score = node.get("Score")
+        self.score = int(node.get("Score"))
         self.owner_id = node.get("OwnerUserId")
         self.body = node.get("Body")
 
     def get_owner(self):
         return data.users[self.owner_id]
+
+    @staticmethod
+    def get_all():
+        return sorted(data.posts, key=lambda post: -post.score)
 
 
 class User(object):

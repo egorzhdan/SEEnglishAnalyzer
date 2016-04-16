@@ -6,4 +6,4 @@ data.load_answers()
 data.load_users()
 data.load_badges()
 
-print()
+answers = stack_exchange.Post.get_all()
