@@ -14,7 +14,7 @@ def load_answers():
         tree = ElementTree.parse(file).getroot()
     except FileNotFoundError:
         print("File", file, "not found")
-        return []
+        return
 
     print("done.")
     for post in tree.iter():
@@ -30,7 +30,7 @@ def load_users():
         tree = ElementTree.parse(file).getroot()
     except FileNotFoundError:
         print("File", file, "not found")
-        return []
+        return
 
     print("done.")
     for user in tree.iter():
