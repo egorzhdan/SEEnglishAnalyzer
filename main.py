@@ -1,9 +1,11 @@
 import data
-import stack_exchange
+import html_builder
 
+
+count = 200
 
 data.load_answers()
 data.load_users()
 data.load_badges()
 
-answers = stack_exchange.Post.get_all()
+html_builder.run(count)
