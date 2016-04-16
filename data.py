@@ -8,7 +8,13 @@ path = os.path.expanduser('~') + "/Downloads/dump/"
 def load_answers():
     posts = []
     print("Loading Users.xml...", end=" ", flush=True)
-    tree = ElementTree.parse(path + "Posts.xml").getroot()
+    file = path + "Posts.xml"
+    try:
+        tree = ElementTree.parse(file).getroot()
+    except FileNotFoundError:
+        print("File", file, "not found")
+        return []
+
     print("done.")
     for post in tree.iter():
         post_type = post.get("PostTypeId")
