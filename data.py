@@ -4,7 +4,7 @@ import stack_exchange
 
 path = os.path.expanduser('~') + "/Downloads/dump/"
 users = dict()
-posts = []
+posts = dict()
 
 
 def load_answers():
@@ -20,7 +20,43 @@ def load_answers():
     for post in tree.iter():
         post_type = post.get("PostTypeId")
         if post_type is not None and int(post_type) == 2:
-            posts.append(stack_exchange.Post(post))
+            new_post = stack_exchange.Post(post)
+            posts[new_post.identifier] = new_post
+
+
+def load_questions():
+    print("Loading Posts.xml...", end=" ", flush=True)
+    file = path + "Posts.xml"
+    try:
+        tree = ElementTree.parse(file).getroot()
+    except FileNotFoundError:
+        print("File", file, "not found")
+        return
+
+    print("done.")
+    for post in tree.iter():
+        post_type = post.get("PostTypeId")
+        if post_type is not None and int(post_type) == 1:
+            new_post = stack_exchange.Post(post)
+            posts[new_post.identifier] = new_post
+
+
+def load_links():
+    print("Loading PostLinks.xml...", end=" ", flush=True)
+    file = path + "PostLinks.xml"
+    try:
+        tree = ElementTree.parse(file).getroot()
+    except FileNotFoundError:
+        print("File", file, "not found")
+        return
+
+    print("done.")
+    for entry in tree.iter():
+        link_type = entry.get("LinkTypeId")
+        if link_type is not None and int(link_type) == 3:
+            rel_post_id = entry.get("RelatedPostId")
+            if rel_post_id is not None and rel_post_id in posts:
+                posts[rel_post_id].has_dupe = True
 
 
 def load_users():

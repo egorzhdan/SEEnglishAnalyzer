@@ -10,13 +10,14 @@ class Post(object):
         except TypeError:
             self.owner_id = -1
         self.body = node.get("Body")
+        self.has_dupe = False
 
     def get_owner(self):
         return data.users[self.owner_id]
 
     @staticmethod
     def get_all():
-        return sorted(data.posts, key=lambda post: -post.score)
+        return sorted(data.posts.values(), key=lambda post: -post.score)
 
 
 class User(object):

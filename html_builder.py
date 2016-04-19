@@ -9,11 +9,11 @@ class HtmlPage(object):
         self.string += '<!DOCTYPE html>' \
                        '<html lang="en">' \
                        '<head><meta charset="UTF-8">' \
-                       '<title>English StackExchange Answers</title>' \
+                       '<title>English StackExchange Questions</title>' \
                        '<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">' \
                        '</head><body>' \
                        '<div class="container">' \
-                       '<h1 class="page-header">English StackExchange Answers</h1>'
+                       '<h1 class="page-header">English StackExchange Questions</h1>'
 
     def finish(self):
         self.string += '</div></body></html>'
@@ -37,12 +37,12 @@ class HtmlPage(object):
 def run(count):
     print("Making HTML page...", end=" ", flush=True)
     html = HtmlPage()
-    answers = stack_exchange.Post.get_all()
+    questions = stack_exchange.Post.get_all()
     html.start()
     i = 0
-    for answer in answers:
-        if answer.get_owner().class2_count >= 2:
-            html.add_row(answer)
+    for question in questions:
+        if question.get_owner().class2_count >= 2 and question.has_dupe:
+            html.add_row(question)
 
         i += 1
         if i >= count:
