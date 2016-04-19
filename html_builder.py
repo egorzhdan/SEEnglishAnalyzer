@@ -44,9 +44,9 @@ def run(count):
         if question.get_owner().class2_count >= 2 and question.has_dupe:
             html.add_row(question)
 
-        i += 1
-        if i >= count:
-            break
+            i += 1
+            if i >= count:
+                break
     html.finish()
     print("done.")
     html.save("result.html")
