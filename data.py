@@ -55,8 +55,9 @@ def load_links():
         link_type = entry.get("LinkTypeId")
         if link_type is not None and int(link_type) == 3:
             rel_post_id = entry.get("RelatedPostId")
-            if rel_post_id is not None and rel_post_id in posts:
-                posts[rel_post_id].has_dupe = True
+            post_id = entry.get("PostId")
+            if rel_post_id is not None and rel_post_id in posts and post_id in posts:
+                posts[rel_post_id].dupes.append(post_id)
 
 
 def load_users():

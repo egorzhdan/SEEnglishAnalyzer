@@ -1,4 +1,5 @@
 import stack_exchange
+import data
 
 
 class HtmlPage(object):
@@ -20,13 +21,21 @@ class HtmlPage(object):
 
     def add_row(self, item):
         author = item.get_owner()
+        dupes_text = '<b>Duplicates:</b><br>' + "<br>".join([('<a href="http://english.stackexchange.com/questions/' +
+                                                              data.posts[post_id].identifier + '">' + data.posts[
+                                                                  post_id].title + "</a>")
+                                                             if post_id in data.posts else "removed"
+                                                             for post_id in item.dupes])
         self.string += '<div class="panel panel-default">' + \
-                       '<div class="panel-heading">Author:&nbsp; <a href="http://english.stackexchange.com/users/' + \
+                       '<div class="panel-heading"><p class="lead">' + item.title + '</p>' \
+                       'Author:&nbsp; <a href="http://english.stackexchange.com/users/' + \
                        author.identifier + '"><b>' + author.display_name + '</b> (' + str(author.class2_count) + \
                        ' silver badges) </a><br>Score:&nbsp; ' + str(item.score) + \
                        '</div>' + \
                        '<div class="panel-body">' + item.body + \
-                       '</div></div>'
+                       '</div>' \
+                       '<div class="panel-footer">' + dupes_text + '</div>' \
+                                                                   '</div>'
 
     def save(self, file):
         out = open(file, "w")
@@ -41,7 +50,7 @@ def run(count):
     html.start()
     i = 0
     for question in questions:
-        if question.get_owner().class2_count >= 2 and question.has_dupe:
+        if question.get_owner().class2_count >= 2 and len(question.dupes) > 0:
             html.add_row(question)
 
             i += 1

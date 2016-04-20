@@ -5,12 +5,13 @@ class Post(object):
     def __init__(self, node):
         self.identifier = node.get("Id")
         self.score = int(node.get("Score"))
+        self.title = node.get("Title")
         try:
             self.owner_id = int(node.get("OwnerUserId"))
         except TypeError:
             self.owner_id = -1
         self.body = node.get("Body")
-        self.has_dupe = False
+        self.dupes = []
 
     def get_owner(self):
         return data.users[self.owner_id]
